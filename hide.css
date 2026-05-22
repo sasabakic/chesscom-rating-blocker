@@ -71,11 +71,38 @@ html:not(.crh-disabled) .home-stats-rating {
 }
 
 /* --- 5. Rating graphs / history ------------------------------------- */
-/* (Covered by the broad rule via class names like rating-graph, but
-   keep explicit entries as a safety net.) */
+/* Chess.com renders rating charts with Highcharts. Hide the chart
+   wrappers (chess.com classes + Highcharts data attribute) so the
+   layout collapses cleanly instead of leaving an empty box. */
 
+html:not(.crh-disabled) .highcharts-container,
+html:not(.crh-disabled) [data-highcharts-chart],
+html:not(.crh-disabled) .stat-section-chart,
+html:not(.crh-disabled) .overview-stats-item-chart,
 html:not(.crh-disabled) .rating-graph,
 html:not(.crh-disabled) .rating-history,
 html:not(.crh-disabled) .stats-rating-graph {
+  display: none !important;
+}
+
+/* --- 6. Profile overview tile rating + delta ------------------------ */
+/* The "Rapid 1017 +300" block in overview cards. Hide both the rating
+   wrap and the change badge so the tile collapses to just the icon
+   and the game-type label. */
+
+html:not(.crh-disabled) .overview-stats-item-rating-wrap,
+html:not(.crh-disabled) .overview-stats-item-change {
+  display: none !important;
+}
+
+/* --- 7. Expanded stats list ("Highest", "Rating Change" rows) ------- */
+/* The detail panel uses <li> rows with a label + aside value. We use
+   :has() to hide the entire row when the aside is rating-bearing, so
+   the dangling label ("Highest", "Rating Change") goes with it. */
+
+html:not(.crh-disabled) .stat-text-data-stats-list-item:has(.stat-text-data-highest),
+html:not(.crh-disabled) .stat-text-data-stats-list-item:has(.stat-text-data-rating-change),
+html:not(.crh-disabled) .stat-text-data-highest,
+html:not(.crh-disabled) .stat-text-data-rating-change {
   display: none !important;
 }

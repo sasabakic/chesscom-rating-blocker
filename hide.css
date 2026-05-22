@@ -1,0 +1,81 @@
+/*
+ * Chess.com Rating Hider
+ *
+ * All rules are scoped to `html:not(.crh-disabled)` so the toggle in the
+ * popup can disable hiding by adding the `crh-disabled` class on <html>.
+ *
+ * Strategy:
+ *  1. A broad attribute selector hides any element whose class contains
+ *     "rating", with explicit exclusions for puzzle/lesson/training/rush
+ *     and a few non-rating UI elements that happen to share the substring.
+ *  2. Specific known chess.com class names are listed as a safety net in
+ *     case the broad selector misses (e.g. classes that don't use "rating"
+ *     in their name).
+ *  3. Rating change deltas (+8 / -12 / arrows) shown after games and in
+ *     archives are covered by both the broad and specific selectors.
+ */
+
+/* --- 1. Broad rule -------------------------------------------------- */
+
+html:not(.crh-disabled) [class*="rating" i]:not([class*="puzzle" i]):not([class*="lesson" i]):not([class*="training" i]):not([class*="rush" i]):not([class*="ratings-snapshot" i]):not([class*="rating-required" i]) {
+  display: none !important;
+}
+
+/* --- 2. Specific known chess.com selectors -------------------------- */
+
+html:not(.crh-disabled) .user-tagline-rating,
+html:not(.crh-disabled) .user-username-rating,
+html:not(.crh-disabled) .cc-user-rating,
+html:not(.crh-disabled) .cc-user-rating-white,
+html:not(.crh-disabled) .cc-user-rating-black,
+html:not(.crh-disabled) .user-popover-rating,
+html:not(.crh-disabled) .player-component-rating,
+html:not(.crh-disabled) .player-rating,
+html:not(.crh-disabled) .player-row-rating,
+html:not(.crh-disabled) .live-card-rating,
+html:not(.crh-disabled) .archive-games-rating,
+html:not(.crh-disabled) .activity-rating,
+html:not(.crh-disabled) .theatre-rating-component,
+html:not(.crh-disabled) .master-game-rating,
+html:not(.crh-disabled) .tournament-pairing-rating,
+html:not(.crh-disabled) .leaderboard-cell-rating,
+html:not(.crh-disabled) .rating-component,
+html:not(.crh-disabled) .rating-summary,
+html:not(.crh-disabled) .rating-card-component,
+html:not(.crh-disabled) .game-over-rating-change,
+html:not(.crh-disabled) .game-over-rating,
+html:not(.crh-disabled) .post-game-rating,
+html:not(.crh-disabled) [data-test-element="player-rating"],
+html:not(.crh-disabled) [data-cy="rating"],
+html:not(.crh-disabled) [data-test-element*="rating" i]:not([data-test-element*="puzzle" i]):not([data-test-element*="lesson" i]):not([data-test-element*="rush" i]) {
+  display: none !important;
+}
+
+/* --- 3. Matchmaking / New Game / time-control rating ranges --------- */
+
+html:not(.crh-disabled) .new-game-index-rating-range,
+html:not(.crh-disabled) .new-game-rating-range,
+html:not(.crh-disabled) .live-pool-rating,
+html:not(.crh-disabled) .seek-list-rating,
+html:not(.crh-disabled) [class*="rating-range" i] {
+  display: none !important;
+}
+
+/* --- 4. Stats / profile rating tiles -------------------------------- */
+
+html:not(.crh-disabled) .profile-stat-rating,
+html:not(.crh-disabled) .profile-stats-rating,
+html:not(.crh-disabled) .stats-overview-component-rating,
+html:not(.crh-disabled) .home-stats-rating {
+  display: none !important;
+}
+
+/* --- 5. Rating graphs / history ------------------------------------- */
+/* (Covered by the broad rule via class names like rating-graph, but
+   keep explicit entries as a safety net.) */
+
+html:not(.crh-disabled) .rating-graph,
+html:not(.crh-disabled) .rating-history,
+html:not(.crh-disabled) .stats-rating-graph {
+  display: none !important;
+}

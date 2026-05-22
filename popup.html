@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        width: 260px;
+        margin: 0;
+        padding: 16px;
+        color: #1c1c1c;
+      }
+      h1 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 0 14px;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .row span {
+        font-size: 13px;
+      }
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 22px;
+        flex-shrink: 0;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background-color: #ccc;
+        border-radius: 22px;
+        transition: 0.15s;
+      }
+      .slider::before {
+        content: "";
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        left: 2px;
+        bottom: 2px;
+        background: white;
+        border-radius: 50%;
+        transition: 0.15s;
+      }
+      input:checked + .slider {
+        background-color: #7fa650;
+      }
+      input:checked + .slider::before {
+        transform: translateX(18px);
+      }
+      .hint {
+        font-size: 11px;
+        color: #777;
+        margin: 12px 0 0;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Chess.com Rating Hider</h1>
+    <label class="row">
+      <span>Hide ratings</span>
+      <span class="switch">
+        <input type="checkbox" id="toggle" />
+        <span class="slider"></span>
+      </span>
+    </label>
+    <p class="hint">Reload chess.com tabs after changing this.</p>
+    <script src="popup.js"></script>
+  </body>
+</html>

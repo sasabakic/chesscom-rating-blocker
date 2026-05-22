@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Chess.com Rating Hider",
+  "version": "1.0.0",
+  "description": "Hides all chess game ratings on chess.com so you can just enjoy the game.",
+  "permissions": ["storage"],
+  "host_permissions": ["*://*.chess.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://*.chess.com/*"],
+      "js": ["content.js"],
+      "css": ["hide.css"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Chess.com Rating Hider"
+  }
+}

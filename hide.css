@@ -17,7 +17,7 @@
 
 /* --- 1. Broad rule -------------------------------------------------- */
 
-html:not(.crh-disabled) [class*="rating" i]:not([class*="puzzle" i]):not([class*="lesson" i]):not([class*="training" i]):not([class*="rush" i]):not([class*="ratings-snapshot" i]):not([class*="rating-required" i]) {
+html:not(.crh-disabled) [class*="rating" i]:not([class*="puzzle" i]):not([class*="lesson" i]):not([class*="training" i]):not([class*="rush" i]):not([class*="ratings-snapshot" i]):not([class*="rating-required" i]):not([class*="review-rating" i]) {
   display: none !important;
 }
 

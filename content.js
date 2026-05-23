@@ -73,27 +73,41 @@
     stripFromNode(document.body);
 
     // Watch for SPA navigation / dynamically inserted nodes.
+    //
+    // We intentionally do NOT observe characterData. Usernames carry their
+    // "(1234)" suffix in the text they're inserted with, so reacting to
+    // childList is enough. Watching characterData meant our callback fired on
+    // every text tick on the page — clocks, engine eval, etc. — and ran a
+    // .closest() lookup per tick just to bail. That was the extension's main
+    // idle-CPU drain; dropping it is the heat fix.
+    //
+    // Inserted nodes are coalesced and processed once per frame via rAF, so
+    // bursts of DOM churn collapse into a single pass instead of one
+    // querySelectorAll per mutation. rAF runs before paint (no flash) and is
+    // throttled in background tabs (no work when you can't see the page).
+    const pending = new Set();
+    let scheduled = false;
+
+    const flush = () => {
+      scheduled = false;
+      const batch = [...pending];
+      pending.clear();
+      for (const node of batch) stripFromNode(node);
+    };
+
     const observer = new MutationObserver((mutations) => {
       for (const m of mutations) {
-        if (m.type === "characterData") {
-          // A text node changed — re-scan its closest username ancestor.
-          const parent = m.target.parentElement;
-          if (parent && parent.closest(USERNAME_SELECTOR)) {
-            stripFromNode(parent.closest(USERNAME_SELECTOR));
-          }
-        } else {
-          for (const added of m.addedNodes) {
-            if (added.nodeType === Node.ELEMENT_NODE) stripFromNode(added);
-          }
+        for (const added of m.addedNodes) {
+          if (added.nodeType === Node.ELEMENT_NODE) pending.add(added);
         }
+      }
+      if (pending.size && !scheduled) {
+        scheduled = true;
+        requestAnimationFrame(flush);
       }
     });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      characterData: true,
-    });
+    observer.observe(document.body, { childList: true, subtree: true });
   }
 
   if (document.readyState === "loading") {
